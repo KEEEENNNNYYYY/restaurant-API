@@ -7,57 +7,35 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.Objects;
 
 import static org.springframework.jdbc.support.JdbcUtils.closeConnection;
 
 public class Ingredient {
+    private String id;
     private String name;
-    private Long id;
-    private Double unitPrice;
-    private LocalDate lastChange ;
+    private Map<LocalDate, Double> prices;
     private Unit unit;
-    protected Long avalaibleStock ;
+    private LocalDate updatedOn;
 
-    public Ingredient(Long id, LocalDate lastChange, String name, Unit unit, Double unitPrice) {
+    public Ingredient(String id, String name, Map<LocalDate, Double> prices, Unit unit, LocalDate updatedOn) {
         this.id = id;
-        this.lastChange = lastChange;
         this.name = name;
+        this.prices = prices;
         this.unit = unit;
-        this.unitPrice = unitPrice;
+        this.updatedOn = updatedOn;
     }
+
     public Ingredient() {
 
     }
 
-    public Long getAvalaibleStock() {
-        return avalaibleStock;
-    }
-
-    public void setAvalaibleStock(Long avalaibleStock) {
-        this.avalaibleStock = avalaibleStock;
-    }
-
-    public LocalDate getLastChange() {
-        return lastChange;
-    }
-
-    public void setLastChange(LocalDate lastChange) {
-        this.lastChange = lastChange;
-    }
-
-    public Unit getUnit() {
-        return unit;
-    }
-
-    public void setUnit(Unit unit) {
-        this.unit = unit;
-    }
-
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -69,22 +47,57 @@ public class Ingredient {
         this.name = name;
     }
 
-    public Double getUnitPrice() {
-        return unitPrice;
+    public Map<LocalDate, Double> getPrices() {
+        return prices;
     }
 
-    public void setUnitPrice(Double unitPrice) {
-        this.unitPrice = unitPrice;
+    public Double getPriceAt(LocalDate localDate) {
+        if(prices.containsKey(localDate)) {
+            return prices.get(localDate);
+        }
+        return null;
+    }
+
+    public void setPrices(Map<LocalDate, Double> prices) {
+        this.prices = prices;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
+    public LocalDate getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(LocalDate updatedOn) {
+        this.updatedOn = updatedOn;
     }
 
     @Override
     public String toString() {
-        return "Ingredient{" +
+        return "Ingredient {" +
                 "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", unitPrice=" + unitPrice +
-                ", lastChange=" + lastChange +
+                ", nom='" + name + '\'' +
+                ", prices=" + prices +
                 ", unit=" + unit +
+                ", updatedOn=" + updatedOn +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Ingredient that = (Ingredient) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(prices, that.prices) && unit == that.unit && Objects.equals(updatedOn, that.updatedOn);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, prices, unit, updatedOn);
     }
 }

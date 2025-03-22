@@ -2,17 +2,14 @@ package com.gastronomiepizza.DAO;
 
 import com.gastronomiepizza.Database;
 import com.gastronomiepizza.model.*;
-import org.springframework.aot.generate.InMemoryGeneratedFiles;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DishDAO {
-
+/*
     public List<Dish> getAllDishes() {
         Database dataBase = new Database();
         Connection conn = dataBase.getConnection();
@@ -195,47 +192,7 @@ public class DishDAO {
 
     /***********/
 
-    public List<DishIngredient> getRecipe(int idDish) {
-        Database dataBase = new Database();
-        Connection conn = dataBase.getConnection();
-        List<DishIngredient> dishIngredientList = new ArrayList<>();
-
-        if (conn != null) {
-            String sql = "SELECT i.name AS ingredient_name, di.required_quantity AS required_quantity , di.unit, di.unit_price \n" +
-                    "FROM dish_ingredient di \n" +
-                    "JOIN ingredient i ON di.id_ingredient = i.id_ingredient \n" +
-                    "WHERE di.id_dish = ?  \n" +
-                    "ORDER BY i.name DESC;";
-
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setInt(1, idDish);
-                boolean hasResult = pstmt.execute();
-
-                while (hasResult) {
-                    try (ResultSet rs = pstmt.getResultSet()) {
-                        while (rs.next()) {
-                            DishIngredient dishIngredient = new DishIngredient();
-                            dishIngredient.setName(rs.getString("ingredient_name"));
-                            dishIngredient.setQuantity(rs.getDouble("required_quantity"));
-                            dishIngredient.setUnit(Unit.valueOf(rs.getString("unit")));
-                            dishIngredient.setUnitPrice(rs.getDouble("unit_price"));
-
-
-                            dishIngredientList.add(dishIngredient);
-                        }
-                    }
-                    hasResult = pstmt.getMoreResults();
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-                throw new RuntimeException("Erreur lors de la récupération des ingrédients du plat", e);
-            } finally {
-                closeConnection(conn);
-            }
-        }
-        return dishIngredientList;
-    }
+    /*
 
     public List<Ingredient> getStock(int idDish){
         Database dataBase = new Database();
@@ -313,7 +270,96 @@ public class DishDAO {
         return maxDishes;
     }
 
+if (criteria.containsKey("startDate")) {
+            sql.append(" AND update_datetime >= ?");
+            params.add(Date.valueOf((String) criteria.get("startDate")));
+        }
+        if (criteria.containsKey("endDate")) {
+            sql.append(" AND update_datetime <= ?");
+            params.add(Date.valueOf((String) criteria.get("endDate")));
+        }
 
+*/
+    public DishIngredient getRecipe(int idDish) throws SQLException {
+        Database dataBase = new Database();
+        Connection conn = dataBase.getConnection();
+        List<DishIngredient> dishIngredientList = new ArrayList<>();
+
+        if (conn != null) {
+            String sql = "SELECT i.name AS ingredient_name, di.required_quantity AS required_quantity , di.unit, di.unit_price \n" +
+                    "FROM dish_ingredient di \n" +
+                    "JOIN ingredient i ON di.id_ingredient = i.id_ingredient \n" +
+                    "WHERE di.id_dish = ?  \n" +
+                    "ORDER BY i.name DESC;";
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, idDish);
+                boolean hasResult = pstmt.execute();
+
+                while (hasResult) {
+                    try (ResultSet rs = pstmt.getResultSet()) {
+                        while (rs.next()) {
+                            DishIngredient dishIngredient = new DishIngredient();
+                            dishIngredient.setName(rs.getString("ingredient_name"));
+                            dishIngredient.setQuantity(rs.getDouble("required_quantity"));
+                            dishIngredient.setUnit(Unit.valueOf(rs.getString("unit")));
+
+                            dishIngredientList.add(dishIngredient);
+                        }
+                    }
+                    hasResult = pstmt.getMoreResults();
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erreur lors de la récupération des ingrédients du plat", e);
+            } finally {
+                closeConnection(conn);
+            }
+        }
+        return (DishIngredient) dishIngredientList;
+    }
+
+    /**
+     *  function that answer .4 of part 1 :
+     *
+     * @param dishId
+     * @return Double
+     * @throws SQLException
+     */
+    public Double getDishRecipePrice(Long dishId) throws SQLException {
+        Database dataBase = new Database();
+        Connection conn = dataBase.getConnection();
+        List<Double> priceTable = new ArrayList<>();
+        List<Double> requiredQuantities = new ArrayList<>();
+
+        Double totalRecipePrice = 0.0;
+
+        if (conn != null) {
+            String query = "SELECT unit_price, required_quantity FROM dish_ingredient WHERE id_dish = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setLong(1, dishId);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        double price = rs.getDouble("unit_price");
+                        double quantity = rs.getDouble("required_quantity");
+                        priceTable.add(price);
+                        requiredQuantities.add(quantity);
+                        totalRecipePrice += price * quantity;
+                    }
+                }
+                System.out.println("Price Table: " + priceTable);
+                System.out.println("Required Quantities: " + requiredQuantities);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Error retrieving dishes from database", e);
+            } finally {
+                closeConnection(conn);
+            }
+        }
+        return totalRecipePrice;
+    }
+    
 
 
     private void closeConnection(Connection conn) {
@@ -327,4 +373,30 @@ public class DishDAO {
     }
 
 
+    public Dish getDishById(int idToFind) throws SQLException {
+        Database dataBase = new Database();
+        Connection conn = dataBase.getConnection();
+        Dish dish = null;
+
+        if (conn != null) {
+            String sql = "SELECT id_dish, name, unit_price FROM dish WHERE id_dish = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, idToFind);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        dish = new Dish();
+                        dish.setId(rs.getString("id_dish"));
+                        dish.setName(rs.getString("name"));
+                        dish.setUnitPrice(rs.getDouble("unit_price")); // Récupérer le prix directement depuis la base de données
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erreur lors de la récupération du plat depuis la base de données", e);
+            } finally {
+                closeConnection(conn);
+            }
+        }
+        return dish;
+    }
 }
