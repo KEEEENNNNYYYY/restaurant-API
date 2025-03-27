@@ -9,13 +9,15 @@ public class Ingredient {
     private Double prices;
     private Unit unit;
     private LocalDate updatedOn;
+    private Double stock;
 
-    public Ingredient(String id, String name, Double prices, Unit unit, LocalDate updatedOn) {
+    public Ingredient(String id, String name, Double prices, Double stock, Unit unit) {
         this.id = id;
         this.name = name;
         this.prices = prices;
+        this.stock = stock;
         this.unit = unit;
-        this.updatedOn = updatedOn;
+        this.updatedOn = LocalDate.now() ;
     }
 
     public Ingredient() {
@@ -64,6 +66,13 @@ public class Ingredient {
     }
 
 
+    public Double getStock() {
+        return stock;
+    }
+
+    public void setStock(Double stock) {
+        this.stock = stock;
+    }
 
     public Unit getUnit() {
         return unit;
