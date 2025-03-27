@@ -1,9 +1,14 @@
 package com.td4.DTO;
 
+import com.td4.model.DishIngredient;
+
+import java.util.List;
+
 public class DishDTO {
     private String id_dish;
     private String name;
     private Double unit_price;
+    private List<DishIngredient> dishIngredient;
 
     public DishDTO(String id_dish, String name, Double unit_price) {
         this.id_dish = id_dish;
@@ -11,8 +16,23 @@ public class DishDTO {
         this.unit_price = unit_price;
     }
 
+    public DishDTO(List<DishIngredient> dishIngredient, String id_dish, String name, Double unit_price) {
+        this.dishIngredient = dishIngredient;
+        this.id_dish = id_dish;
+        this.name = name;
+        this.unit_price = unit_price;
+    }
+
     public DishDTO() {
 
+    }
+
+    public List<DishIngredient> getDishIngredient() {
+        return dishIngredient;
+    }
+
+    public void setDishIngredient(List<DishIngredient> dishIngredient) {
+        this.dishIngredient = dishIngredient;
     }
 
     public String getId_dish() {
