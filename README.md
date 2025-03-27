@@ -1,1 +1,1 @@
-# restaurent-API
+# restaurant-API
