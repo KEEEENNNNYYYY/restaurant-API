@@ -4,18 +4,16 @@ import java.time.LocalDate;
 
 public class DishIngredient {
     private String id;
-    private String Name ;
+    private String id_ingredient;
     private Double quantity;
-    private Unit unit ;
     private Ingredient ingredient;
     private String dishId;
 
-    public DishIngredient(String dishId, String id, Ingredient ingredient, Double quantity, Unit unit) {
+    public DishIngredient(String dishId, String id, Ingredient ingredient, Double quantity) {
         this.dishId = dishId;
         this.id = id;
         this.ingredient = ingredient;
         this.quantity = quantity;
-        this.unit = unit;
     }
 
     public DishIngredient() {
@@ -27,13 +25,13 @@ public class DishIngredient {
     }
 
 
+    public String getId_ingredient() {
+        return id_ingredient;
+    }
 
-
-
-
-
-
-
+    public void setId_ingredient(String id_ingredient) {
+        this.id_ingredient = id_ingredient;
+    }
 
     public String getDishId() {
         return dishId;
@@ -59,14 +57,6 @@ public class DishIngredient {
         this.ingredient = ingredient;
     }
 
-    public String getName() {
-        return Name;
-    }
-
-    public void setName(String name) {
-        Name = name;
-    }
-
     public Double getQuantity() {
         return quantity;
     }
@@ -75,11 +65,4 @@ public class DishIngredient {
         this.quantity = quantity;
     }
 
-    public Unit getUnit() {
-        return unit;
-    }
-
-    public void setUnit(Unit unit) {
-        this.unit = unit;
-    }
 }
