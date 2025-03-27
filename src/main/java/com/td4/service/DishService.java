@@ -18,4 +18,8 @@ public class DishService {
     public List<DishDTO> getAllDishes() {
         return dishDAO.getAllDishes();
     }
+
+    public DishDTO getDishByIdWithIngredients(String id) {
+        return dishDAO.getDishById(id);
+    }
 }
