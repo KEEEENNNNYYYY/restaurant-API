@@ -1,6 +1,8 @@
 package com.td4.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +10,10 @@ import java.util.List;
 public class Dish {
     private String id;
     private String name;
+    @JsonProperty("unit_price")
     private Double fixUnitPrice;
     private List<DishIngredient> ingredients;
+    private Double dishIngredientCost;
 
     public Dish(Double fixUnitPrice, String id, List<DishIngredient> ingredients, String name) {
         this.fixUnitPrice = fixUnitPrice;
