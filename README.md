@@ -2,9 +2,13 @@
 
 Working end point :
 
- `/api/dishes/all`
- 
-    ex :
+
+## 1-
+ *Return all dishes inside the table 'dish' inside the **Database :***
+
+    /api/dishes/all
+
+ex :
 
     {
     "id_dish": "1",
@@ -12,6 +16,6 @@ Working end point :
     "unit_price": 15000
     }, 
 
-*return all dishes inside the table 'dish' inside the **Database***
+## 2-
 
     
