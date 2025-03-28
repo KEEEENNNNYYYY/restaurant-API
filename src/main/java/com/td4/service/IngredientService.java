@@ -3,6 +3,7 @@ package com.td4.service;
 import com.td4.DAO.DishDAO;
 import com.td4.DAO.IngredientDAO;
 import com.td4.DTO.DishDTO;
+import com.td4.DTO.IngredientDTO;
 import com.td4.model.Ingredient;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class IngredientService {
         this.ingredientDAO = ingredientDAO;
     }
 
-    public List<Ingredient> getAllIngredient() {
+    public List<IngredientDTO> getAllIngredient() {
         return ingredientDAO.getAllIngredient();
     }
 }

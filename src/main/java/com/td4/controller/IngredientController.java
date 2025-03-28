@@ -2,6 +2,7 @@ package com.td4.controller;
 
 
 import com.td4.DAO.IngredientDAO;
+import com.td4.DTO.IngredientDTO;
 import com.td4.model.Ingredient;
 import com.td4.service.IngredientService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,7 @@ public class IngredientController {
     }
 
     @GetMapping("/all")
-    public List<Ingredient> getAllIngredient() {
+    public List<IngredientDTO> getAllIngredient() {
         return ingredientService.getAllIngredient();
     }
 

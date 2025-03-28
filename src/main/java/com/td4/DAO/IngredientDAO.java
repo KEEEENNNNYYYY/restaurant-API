@@ -1,6 +1,7 @@
 package com.td4.DAO;
 
 import com.td4.DTO.DishDTO;
+import com.td4.DTO.IngredientDTO;
 import com.td4.Mapper.DishMapper;
 import com.td4.Mapper.IngredientMapper;
 import com.td4.model.Ingredient;
@@ -19,13 +20,13 @@ public class IngredientDAO {
     public IngredientDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-    public List<Ingredient> getAllIngredient() {
+    public List<IngredientDTO> getAllIngredient() {
         String sql = "SELECT * FROM ingredient";
-        return jdbcTemplate.query(sql, new IngredientMapper.IngredientRowMapper());
+        return jdbcTemplate.query(sql, new IngredientMapper.IngredientDTORowMapper());
     }
 
-    public Ingredient getIngredientById(String id) {
+    /*public Ingredient getIngredientById(String id) {
         String sql = "SELECT * FROM ingredient WHERE id_ingredient = ?";
         return jdbcTemplate.queryForObject(sql, new IngredientMapper.IngredientRowMapper(), id);
-    }
+    }*/
 }
