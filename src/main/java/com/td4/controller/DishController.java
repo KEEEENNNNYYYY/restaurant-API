@@ -1,6 +1,7 @@
 package com.td4.controller;
 
 import com.td4.DAO.DishDAO;
+import com.td4.DTO.DetailledDishDTO;
 import com.td4.DTO.DishDTO;
 import com.td4.model.Dish;
 import com.td4.service.DishService;
@@ -27,7 +28,7 @@ public class DishController {
     }
 
     @GetMapping("/{id}")
-    public DishDTO getDishById(@PathVariable String id) {
+    public DetailledDishDTO getDishById(@PathVariable String id) {
         return dishService.getDishByIdWithIngredients(id);
     }
 
