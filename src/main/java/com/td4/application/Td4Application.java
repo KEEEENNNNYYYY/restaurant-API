@@ -13,9 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 		"com.td4.Mapper"
 })
 public class Td4Application {
-
 	public static void main(String[] args) {
 		SpringApplication.run(Td4Application.class, args);
 	}
-
 }
