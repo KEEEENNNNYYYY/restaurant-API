@@ -1,5 +1,6 @@
 package com.td4.DAO;
 
+import com.td4.DTO.DetailledDishDTO;
 import com.td4.DTO.DishDTO;
 import com.td4.Mapper.DishMapper;
 import com.td4.model.Dish;
@@ -33,7 +34,7 @@ public class DishDAO {
         return jdbcTemplate.query(sql, new DishMapper.DishDTORowMapper());
     }
 
-    public DishDTO getDishById(String id) {
+    public DetailledDishDTO getDishById(String id) {
         String sql = """
     SELECT 
         d.id_dish, d.name, d.unit_price,
@@ -47,19 +48,18 @@ public class DishDAO {
     WHERE d.id_dish = ?::integer
     """;
 
-        // Exécute la requête et mappe le résultat
         return jdbcTemplate.query(
                 sql,
                 rs -> {
-                    DishDTO dishDTO = null;
+                    DetailledDishDTO detailledDishDTO = null;
                     while (rs.next()) {
-                        if (dishDTO == null) {
+                        if (detailledDishDTO == null) {
                             // Crée le DTO une seule fois (pour le plat)
-                            dishDTO = new DishDTO();
-                            dishDTO.setId_dish(rs.getString("id_dish"));
-                            dishDTO.setName(rs.getString("name"));
-                            dishDTO.setUnit_price(rs.getDouble("unit_price"));
-                            dishDTO.setDishIngredient(new ArrayList<>());
+                            detailledDishDTO = new DetailledDishDTO();
+                            detailledDishDTO.setId_dish(rs.getString("id_dish"));
+                            detailledDishDTO.setName(rs.getString("name"));
+                            detailledDishDTO.setUnit_price(rs.getDouble("unit_price"));
+                            detailledDishDTO.setDishIngredient(new ArrayList<>());
                         }
 
                         // Ajoute chaque ingrédient (s'il existe)
@@ -78,10 +78,10 @@ public class DishDAO {
                             //ingredientDetails.setStock(rs.getDouble("stock"));
 
                             ingredient.setIngredient(ingredientDetails);
-                            dishDTO.getDishIngredient().add(ingredient);
+                            detailledDishDTO.getDishIngredient().add(ingredient);
                         }
                     }
-                    return dishDTO;
+                    return detailledDishDTO;
                 },
                 id
         );
