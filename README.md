@@ -55,16 +55,18 @@ ex :
     {
     "id": "1",
     "name": "Saucisse",
-    "prices": 20,
-    "unit": "G",
-    "updatedOn": "2025-01-01",
-    "stock": 100
+    "updatedAt": "2025-01-01",
+    "unitPrice": 20
     },
     {
-    "id": "2",
-    "name": "Huile",
-    "prices": 10000,
-    "unit": "L",
-    "updatedOn": "2025-01-01",
-    "stock": 50
+      "id": "2",
+      "name": "Huile",
+      "updatedAt": "2025-01-01",
+      "unitPrice": 10000
+    },
+    {
+      "id": "3",
+      "name": "Oeuf",
+      "updatedAt": "2025-01-01",
+      "unitPrice": 1000
     },
