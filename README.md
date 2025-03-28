@@ -44,4 +44,27 @@ ex :
     },
 
 ## **This one still need fix on some null value**
-    
+
+# 3-
+*Return a list of all ingredient :* 
+
+    /api/Ingredient/all
+
+ex : 
+
+    {
+    "id": "1",
+    "name": "Saucisse",
+    "prices": 20,
+    "unit": "G",
+    "updatedOn": "2025-01-01",
+    "stock": 100
+    },
+    {
+    "id": "2",
+    "name": "Huile",
+    "prices": 10000,
+    "unit": "L",
+    "updatedOn": "2025-01-01",
+    "stock": 50
+    },
