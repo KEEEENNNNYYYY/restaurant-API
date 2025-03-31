@@ -75,7 +75,7 @@ ex :
 
 *Return the ingredient matching the id*
 
-    http://localhost:8080/api/Ingredient/{id}
+    /api/Ingredient/{id}
 
 ex : 
 
@@ -86,3 +86,29 @@ ex :
       "unitPrice": 20
     }
 
+# 5-
+
+*Return a filtered list of ingredient :*
+
+    /api/Ingredient?priceMinFilter={value}
+
+    /api/Ingredient?priceMaxFilter={value}
+
+    /Ingredient?priceMinFilter={value}&priceMaxFilter={value}
+
+ex: 
+
+    [
+      {
+        "id": 3,
+        "name": "Oeuf",
+        "updatedAt": "2025-01-01",
+        "unitPrice": 1000
+      },
+      {
+        "id": 4,
+        "name": "Pain",
+        "updatedAt": "2025-01-01",
+        "unitPrice": 1000
+      }
+    ]
