@@ -1,13 +1,14 @@
 package com.td4.service;
 
-import com.td4.DAO.DishDAO;
 import com.td4.DAO.IngredientDAO;
-import com.td4.DTO.DishDTO;
 import com.td4.DTO.IngredientDTO;
-import com.td4.model.Ingredient;
+import com.td4.model.Criteria;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class IngredientService {
@@ -19,5 +20,21 @@ public class IngredientService {
 
     public List<IngredientDTO> getAllIngredient() {
         return ingredientDAO.getAllIngredient();
+    }
+
+    public IngredientDTO getIngredientById(Integer id) {
+        return ingredientDAO.getAllIngredient().stream()
+                .filter(ingredientDTO -> id.equals(ingredientDTO.getId()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<IngredientDTO> getFilteredIngredients(Criteria criteria) {
+        return ingredientDAO.getAllIngredient().stream()
+                .filter(ingredient ->
+                        (criteria.getPriceMinFilter() == null || ingredient.getUnitPrice() >= criteria.getPriceMinFilter()) &&
+                                (criteria.getPriceMaxFilter() == null || ingredient.getUnitPrice() <= criteria.getPriceMaxFilter())
+                )
+                .collect(Collectors.toList());
     }
 }
