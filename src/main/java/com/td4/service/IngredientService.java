@@ -29,12 +29,25 @@ public class IngredientService {
                 .orElse(null);
     }
 
-    public List<IngredientDTO> getFilteredIngredients(Criteria criteria) {
+    /*public List<IngredientDTO> getFilteredIngredients(Criteria criteria) {
         return ingredientDAO.getAllIngredient().stream()
                 .filter(ingredient ->
                         (criteria.getPriceMinFilter() == null || ingredient.getUnitPrice() >= criteria.getPriceMinFilter()) &&
                                 (criteria.getPriceMaxFilter() == null || ingredient.getUnitPrice() <= criteria.getPriceMaxFilter())
                 )
                 .collect(Collectors.toList());
+    }*/
+    public List<IngredientDTO> getFilteredIngredients(Criteria criteria) {
+        Objects.requireNonNull(criteria, "Le critère de filtrage ne peut pas être null");
+
+        return ingredientDAO.getAllIngredient().stream()
+                .filter(ingredient -> matchesPriceCriteria(ingredient, criteria))
+                .collect(Collectors.toList());
+    }
+
+    private boolean matchesPriceCriteria(IngredientDTO ingredient, Criteria criteria) {
+        boolean matchesMin = !criteria.hasPriceMinFilter() || ingredient.getUnitPrice() >= criteria.getPriceMinFilter();
+        boolean matchesMax = !criteria.hasPriceMaxFilter() || ingredient.getUnitPrice() <= criteria.getPriceMaxFilter();
+        return matchesMin && matchesMax;
     }
 }
