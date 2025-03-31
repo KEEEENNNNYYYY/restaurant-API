@@ -53,10 +53,10 @@ ex :
 ex : 
 
     {
-    "id": "1",
-    "name": "Saucisse",
-    "updatedAt": "2025-01-01",
-    "unitPrice": 20
+      "id": "1",
+      "name": "Saucisse",
+      "updatedAt": "2025-01-01",
+      "unitPrice": 20
     },
     {
       "id": "2",
@@ -70,3 +70,19 @@ ex :
       "updatedAt": "2025-01-01",
       "unitPrice": 1000
     },
+
+# 4- 
+
+*Return the ingredient matching the id*
+
+    http://localhost:8080/api/Ingredient/{id}
+
+ex : 
+
+    {
+      "id": 1,
+      "name": "Saucisse",
+      "updatedAt": "2025-01-01",
+      "unitPrice": 20
+    }
+
