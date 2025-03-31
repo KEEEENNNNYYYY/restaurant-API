@@ -14,7 +14,7 @@ public class IngredientMapper {
         public IngredientDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 
             IngredientDTO ingredient = new IngredientDTO();
-            ingredient.setId(rs.getString("id_ingredient"));
+            ingredient.setId(rs.getInt("id_ingredient"));
             ingredient.setName(rs.getString("name"));
             ingredient.setUnitPrice(rs.getDouble("unit_price"));
             ingredient.setUpdatedAt(rs.getTimestamp("update_datetime").toLocalDateTime().toLocalDate());
