@@ -24,6 +24,9 @@ public class Ingredient {
 
     }
 
+    public Ingredient(int idIngredient, String name, double unitPrice, String unit, int stock) {
+    }
+
     public Double setPrices(Double prices) {
         Double price = 0.0;
         LocalDate date = LocalDate.now();
