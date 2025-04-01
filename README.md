@@ -6,7 +6,7 @@ Working end point :
 ## 1-
  *Return all dishes inside the table 'dish' inside the **Database :***
 
-    /api/dishes/all
+    GET : /api/dishes/all
 
 ex :
 
@@ -19,7 +19,7 @@ ex :
 ## 2-
 *Return a specific dish with all details about it*
     
-    /api/dishes/{id}
+    GET : /api/dishes/{id}
 
 ex :
 
@@ -48,7 +48,7 @@ ex :
 # 3-
 *Return a list of all ingredient :* 
 
-    /api/Ingredient/all
+    GET : /api/Ingredient/all
 
 ex : 
 
@@ -75,7 +75,7 @@ ex :
 
 *Return the ingredient matching the id*
 
-    /api/Ingredient/{id}
+    GET : /api/Ingredient/{id}
 
 ex : 
 
@@ -90,9 +90,9 @@ ex :
 
 *Return a filtered list of ingredient :*
 
-    /api/Ingredient?priceMinFilter={value}
+    GET : /api/Ingredient?priceMinFilter={value}
 
-    /api/Ingredient?priceMaxFilter={value}
+    GET : /api/Ingredient?priceMaxFilter={value}
 
     /Ingredient?priceMinFilter={value}&priceMaxFilter={value}
 
@@ -112,3 +112,14 @@ ex:
         "unitPrice": 1000
       }
     ]
+
+# 6- 
+
+*Update a Create a new Ingredient*
+
+    Create : 
+    POST : /api/Ingredient
+
+    Update : 
+    PUT : /api/Ingredient
+
