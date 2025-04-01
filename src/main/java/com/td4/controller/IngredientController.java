@@ -4,7 +4,9 @@ package com.td4.controller;
 import com.td4.DAO.IngredientDAO;
 import com.td4.DTO.IngredientDTO;
 import com.td4.model.Criteria;
+import com.td4.model.Ingredient;
 import com.td4.service.IngredientService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,34 +33,6 @@ public class IngredientController {
         return ingredientService.getIngredientById(id);
     }
 
-    /*@GetMapping
-    public ResponseEntity<?> getFilteredIngredients(
-            @RequestParam(required = false) Double priceMinFilter,
-            @RequestParam(required = false) Double priceMaxFilter
-    ) {
-        // Validation des filtres
-        if (priceMinFilter != null && priceMinFilter < 0) {
-            return ResponseEntity.badRequest().body("priceMinFilter ne peut pas être négatif");
-        }
-        if (priceMaxFilter != null && priceMaxFilter < 0) {
-            return ResponseEntity.badRequest().body("priceMaxFilter ne peut pas être négatif");
-        }
-        if (priceMinFilter != null && priceMaxFilter != null && priceMinFilter > priceMaxFilter) {
-            return ResponseEntity.badRequest().body(
-                    "priceMinFilter (" + priceMinFilter + ") ne peut pas être supérieur à priceMaxFilter (" + priceMaxFilter + ")"
-            );
-        }
-
-        // Création du critère de filtrage
-        Criteria criteria = new Criteria();
-        criteria.setPriceMinFilter(priceMinFilter);
-        criteria.setPriceMaxFilter(priceMaxFilter);
-
-        // Récupération des ingrédients filtrés
-        List<IngredientDTO> filteredIngredients = ingredientService.getFilteredIngredients(criteria);
-        return ResponseEntity.ok(filteredIngredients);
-    }*/
-
     @GetMapping
     public ResponseEntity<?> getFilteredIngredients(
             @RequestParam(required = false) Double priceMinFilter,
@@ -84,5 +58,26 @@ public class IngredientController {
 
         List<IngredientDTO> results = ingredientService.getFilteredIngredients(criteria);
         return ResponseEntity.ok(results);
+    }
+
+
+    @PostMapping
+    public ResponseEntity<?> createIngredients(@RequestBody List<Ingredient> ingredients) {
+        try {
+            List<Ingredient> result = ingredientService.createIngredients(ingredients);
+            return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateIngredients(@RequestBody List<Ingredient> ingredients) {
+        try {
+            List<Ingredient> result = ingredientService.updateIngredients(ingredients);
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
