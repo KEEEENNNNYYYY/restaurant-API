@@ -3,6 +3,7 @@ package com.td4.service;
 import com.td4.DAO.IngredientDAO;
 import com.td4.DTO.IngredientDTO;
 import com.td4.model.Criteria;
+import com.td4.model.Ingredient;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,14 +30,6 @@ public class IngredientService {
                 .orElse(null);
     }
 
-    /*public List<IngredientDTO> getFilteredIngredients(Criteria criteria) {
-        return ingredientDAO.getAllIngredient().stream()
-                .filter(ingredient ->
-                        (criteria.getPriceMinFilter() == null || ingredient.getUnitPrice() >= criteria.getPriceMinFilter()) &&
-                                (criteria.getPriceMaxFilter() == null || ingredient.getUnitPrice() <= criteria.getPriceMaxFilter())
-                )
-                .collect(Collectors.toList());
-    }*/
     public List<IngredientDTO> getFilteredIngredients(Criteria criteria) {
         Objects.requireNonNull(criteria, "Le critère de filtrage ne peut pas être null");
 
@@ -49,5 +42,43 @@ public class IngredientService {
         boolean matchesMin = !criteria.hasPriceMinFilter() || ingredient.getUnitPrice() >= criteria.getPriceMinFilter();
         boolean matchesMax = !criteria.hasPriceMaxFilter() || ingredient.getUnitPrice() <= criteria.getPriceMaxFilter();
         return matchesMin && matchesMax;
+    }
+
+    /**
+     * todo: fix save create and update
+     * @param ingredients
+     * @return
+     */
+    public List<Ingredient> createIngredients(List<Ingredient> ingredients) {
+        validateIngredients(ingredients);
+        return ingredientDAO.saveAllIngredients(ingredients);
+    }
+
+    public List<Ingredient> updateIngredients(List<Ingredient> ingredients) {
+        validateIngredients(ingredients);
+        ingredients.forEach(ingredient -> {
+            if (ingredient.getId() == null) {
+                throw new IllegalArgumentException("L'ID est obligatoire pour la mise à jour");
+            }
+        });
+        return ingredientDAO.updateAllIngredients(ingredients);
+    }
+
+    private void validateIngredients(List<Ingredient> ingredients) {
+        if (ingredients == null || ingredients.isEmpty()) {
+            throw new IllegalArgumentException("La liste d'ingrédients ne peut pas être vide");
+        }
+
+        ingredients.forEach(ingredient -> {
+            if (ingredient.getName() == null || ingredient.getName().trim().isEmpty()) {
+                throw new IllegalArgumentException("Le nom de l'ingrédient est obligatoire");
+            }
+            if (ingredient.getPrices() < 0) {
+                throw new IllegalArgumentException("Le prix unitaire ne peut pas être négatif");
+            }
+            if (ingredient.getStock() < 0) {
+                throw new IllegalArgumentException("Le stock ne peut pas être négatif");
+            }
+        });
     }
 }
