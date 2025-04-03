@@ -1,5 +1,6 @@
 package com.td4.DAO;
 
+import com.td4.DTO.CreateIngredientRequest;
 import com.td4.DTO.DishDTO;
 import com.td4.DTO.IngredientDTO;
 import com.td4.Mapper.DishMapper;
@@ -19,7 +20,14 @@ import java.util.stream.Collectors;
 
 @Repository
 public class IngredientDAO {
-
+    /**
+     * TODO : utiliser des injections par Constructeur et non autowired
+     * TODO optionnel : Add allArgsConstructor
+     * TODO : Mapper convertiseur de resultSet en DTO avec "apply"
+     *
+     * injection par constructeur vs autowired question theorique à l'examen
+     * question thoerique 2 : allArgsConstructor vs RequiredArgConstructor
+     */
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -31,25 +39,30 @@ public class IngredientDAO {
         return jdbcTemplate.query(sql, new IngredientMapper.IngredientDTORowMapper());
     }
 
-    public List<Ingredient> saveAllIngredients(List<Ingredient> ingredients) {
-        String sql = "INSERT INTO ingredient (name, unit_price, unit, stock) VALUES (?, ?, ?, ?) RETURNING id_ingredient";
-        return ingredients.stream().map(ingredient -> {
-            Integer id = jdbcTemplate.queryForObject(sql, new Object[]{
-                    ingredient.getName(),
-                    ingredient.getPrices(),
-                    ingredient.getUnit().name(),
-                    ingredient.getStock()
-            }, new int[]{
-                    Types.VARCHAR,
-                    Types.DOUBLE,
-                    Types.VARCHAR,
-                    Types.INTEGER
-            }, Integer.class);
-            ingredient.setId(String.valueOf(id));
-            return ingredient;
-        }).collect(Collectors.toList());
+    public void addIngredient(CreateIngredientRequest createIngredientRequest) {
+        String sql = "INSERT INTO ingredient (" +
+                "id_ingredient, " +
+                "name, " +
+                "unit_price, " +
+                "update_datetime " +
+                ") VALUES (?, ?, ?, ?)";
+
+        try {
+            jdbcTemplate.update(sql,
+                    createIngredientRequest.getId(),
+                    createIngredientRequest.getName(),
+                    createIngredientRequest.getUnit_price(),
+                    createIngredientRequest.getUpdate_datetime());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Put methode need some fix
+     * @param ingredients
+     * @return
+     */
     public List<Ingredient> updateAllIngredients(List<Ingredient> ingredients) {
         String sql = "UPDATE ingredient SET name = ?, unit_price = ?, unit = ?, stock = ? WHERE id_ingredient = ?";
 
