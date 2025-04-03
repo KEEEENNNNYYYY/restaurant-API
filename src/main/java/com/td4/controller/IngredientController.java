@@ -2,6 +2,7 @@ package com.td4.controller;
 
 
 import com.td4.DAO.IngredientDAO;
+import com.td4.DTO.CreateIngredientRequest;
 import com.td4.DTO.IngredientDTO;
 import com.td4.model.Criteria;
 import com.td4.model.Ingredient;
@@ -14,10 +15,18 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/Ingredient")
+@RequestMapping("/ingredients")
 public class IngredientController {
     private final IngredientService ingredientService;
     private IngredientDAO ingredientDAO;
+
+    /**
+     * TO DO: add responseEntity to handdle error
+     * TO DO : create an exeption handller inside service to make error understandable
+     *
+     * Note : Controller is just an error handdler for user
+     * @param ingredientService
+     */
 
     public IngredientController(IngredientService ingredientService) {
         this.ingredientService = ingredientService;
@@ -60,15 +69,9 @@ public class IngredientController {
         return ResponseEntity.ok(results);
     }
 
-
     @PostMapping
-    public ResponseEntity<?> createIngredients(@RequestBody List<Ingredient> ingredients) {
-        try {
-            List<Ingredient> result = ingredientService.createIngredients(ingredients);
-            return ResponseEntity.status(HttpStatus.CREATED).body(result);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public void addIngredients(@RequestBody List<CreateIngredientRequest> requests) {
+        requests.forEach(ingredientService::addIngredient);
     }
 
     @PutMapping
