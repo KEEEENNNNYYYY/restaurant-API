@@ -1,6 +1,7 @@
 package com.td4.service;
 
 import com.td4.DAO.IngredientDAO;
+import com.td4.DTO.CreateIngredientRequest;
 import com.td4.DTO.IngredientDTO;
 import com.td4.model.Criteria;
 import com.td4.model.Ingredient;
@@ -44,16 +45,16 @@ public class IngredientService {
         return matchesMin && matchesMax;
     }
 
+
+    public void addIngredient(CreateIngredientRequest createIngredientRequest){
+        ingredientDAO.addIngredient(createIngredientRequest);
+    }
+
     /**
-     * todo: fix save create and update
+     * the function that need to be fixed below this comment
      * @param ingredients
      * @return
      */
-    public List<Ingredient> createIngredients(List<Ingredient> ingredients) {
-        validateIngredients(ingredients);
-        return ingredientDAO.saveAllIngredients(ingredients);
-    }
-
     public List<Ingredient> updateIngredients(List<Ingredient> ingredients) {
         validateIngredients(ingredients);
         ingredients.forEach(ingredient -> {
