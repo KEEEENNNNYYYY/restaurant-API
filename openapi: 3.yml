@@ -1,0 +1,216 @@
+openapi: 3.0.0
+info:
+  title: TD4 API
+  description: API for managing dishes and ingredients
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+paths:
+  /dishes/all:
+    get:
+      summary: Get all dishes
+      tags:
+        - Dishes
+      responses:
+        '200':
+          description: A list of dishes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DishDTO'
+  /dishes/{id}:
+    get:
+      summary: Get a dish by ID
+      tags:
+        - Dishes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detailed information about a dish
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailledDishDTO'
+  /Ingredient/all:
+    get:
+      summary: Get all ingredients
+      tags:
+        - Ingredients
+      responses:
+        '200':
+          description: A list of ingredients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IngredientDTO'
+  /Ingredient/{id}:
+    get:
+      summary: Get an ingredient by ID
+      tags:
+        - Ingredients
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Information about an ingredient
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientDTO'
+  /Ingredient:
+    get:
+      summary: Get filtered ingredients
+      tags:
+        - Ingredients
+      parameters:
+        - name: priceMinFilter
+          in: query
+          required: false
+          schema:
+            type: number
+            format: double
+        - name: priceMaxFilter
+          in: query
+          required: false
+          schema:
+            type: number
+            format: double
+      responses:
+        '200':
+          description: A list of filtered ingredients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IngredientDTO'
+        '400':
+          description: Invalid filter parameters
+          content:
+            application/json:
+              schema:
+                type: string
+    post:
+      summary: Create new ingredients
+      tags:
+        - Ingredients
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Ingredient'
+      responses:
+        '201':
+          description: Ingredients created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ingredient'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: string
+    put:
+      summary: Update existing ingredients
+      tags:
+        - Ingredients
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Ingredient'
+      responses:
+        '200':
+          description: Ingredients updated
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ingredient'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: string
+components:
+  schemas:
+    DishDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    DetailledDishDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/IngredientDTO'
+    IngredientDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        prices:
+          type: number
+          format: double
+        unit:
+          type: string
+        stock:
+          type: number
+          format: double
+    Ingredient:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        prices:
+          type: number
+          format: double
+        unit:
+          type: string
+        stock:
+          type: number
+          format: double
+        updatedOn:
+          type: string
+          format: date
