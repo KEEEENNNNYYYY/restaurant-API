@@ -1,0 +1,28 @@
+meta {
+  name: Add ingredients
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/ingredients
+  body: json
+  auth: none
+}
+
+body:json {
+  [
+      {
+          "id": 1,
+          "name": "Oeuf",
+          "unitPrice": 1000.0,
+          "updatedAt": "2025-03-01T00:00:00Z"
+      },
+      {
+          "id": 2000,
+          "name": "Huile",
+          "unitPrice": 100.0,
+          "updatedAt": "2025-03-20T00:00:00Z"
+      }
+  ]
+}

@@ -1,0 +1,22 @@
+meta {
+  name: Update ingredients
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:8080/ingredients
+  body: json
+  auth: none
+}
+
+body:json {
+  [
+      {
+          "id": 1,
+          "name": "Oeuf",
+          "prices": [],
+          "stockMovements": []
+      }
+  ]
+}
